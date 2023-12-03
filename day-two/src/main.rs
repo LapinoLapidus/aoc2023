@@ -47,26 +47,52 @@ fn get_sets_from_game(game: &str) -> Vec<Set> {
     set_vec
 }
 
+/* part one
+// fn main() {
+//     let mut failed_games: Vec<u64> = vec![];
+//     for mut game in read_lines().lines() {
+//         for set in get_sets_from_game(game) {
+//             let game_id = u64::from_str(&*game[5..8].replace(":", "").trim()).unwrap();
+//             if set.0 > RED_CUBES {
+//                 failed_games.push(game_id);
+//                 break;
+//             }
+//             if set.1 > GREEN_CUBES {
+//                 failed_games.push(game_id);
+//                 break;
+//             }
+//             if set.2 > BLUE_CUBES {
+//                 failed_games.push(game_id);
+//                 break;
+//             }
+//         }
+//     }
+//     let success_games: Vec<u64> = (1..101).filter(|num| !failed_games.contains(num)).collect();
+//     println!("{:?}", success_games);
+//     println!("{:?}", success_games.iter().sum::<u64>())
+/ }*/
 fn main() {
     let mut failed_games: Vec<u64> = vec![];
+    let mut counter = 0usize;
     for mut game in read_lines().lines() {
+        let mut r = vec![];
+        let mut g = vec![];
+        let mut b = vec![];
+
         for set in get_sets_from_game(game) {
             let game_id = u64::from_str(&*game[5..8].replace(":", "").trim()).unwrap();
-            if set.0 > RED_CUBES {
-                failed_games.push(game_id);
-                break;
-            }
-            if set.1 > GREEN_CUBES {
-                failed_games.push(game_id);
-                break;
-            }
-            if set.2 > BLUE_CUBES {
-                failed_games.push(game_id);
-                break;
-            }
+            r.push(set.0);
+            g.push(set.1);
+            b.push(set.2);
         }
+        r.sort();
+        g.sort();
+        b.sort();
+        let highest_r: usize = (*r.last().unwrap()).into();
+        let highest_g: usize = (*g.last().unwrap()).into();
+        let highest_b: usize = (*b.last().unwrap()).into();
+        counter += (highest_r * highest_g * highest_b);
     }
-    let success_games: Vec<u64> = (1..101).filter(|num| !failed_games.contains(num)).collect();
-    println!("{:?}", success_games);
-    println!("{:?}", success_games.iter().sum::<u64>())
+
+    println!("{}", counter)
 }
