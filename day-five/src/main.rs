@@ -53,6 +53,7 @@ fn main() {
             for x in (0..seeds_and_lengths.len()).step_by(2) {
                 (seeds_and_lengths[x]..seeds_and_lengths[x]+ seeds_and_lengths[x+1]).collect_into(&mut seeds);
             }
+            println!("Seed count: {}", seeds.len());
         } else if category.starts_with("seed-to-soil map:") {
             x_to_y(category, &mut seed_to_soil);
         } else if category.starts_with("soil-to-fertilizer map:") {
@@ -70,6 +71,7 @@ fn main() {
         }
     }
     let mut smallest = 9999999999usize;
+
     for seed in seeds {
         let soil = a_to_b(seed, &seed_to_soil);
         let fertilizer = a_to_b(soil, &soil_to_fertilizer);
