@@ -118,13 +118,15 @@ fn main() {
         for (y, row) in matrix.iter().enumerate() {
             for (x, val) in row.iter().enumerate() {
                 if map.contains_key(&(y, x)) {
-                    matrix_copy[y][x] = (*map.get(&(y, x)).unwrap().to_string()).parse().unwrap();
+                    matrix_copy[y][x] = "X".parse().unwrap();
+                    // matrix_copy[y][x] = (*map.get(&(y, x)).unwrap().to_string()).parse().unwrap();
                 }
             }
         }
 
         let matrix_copy = matrix_copy.iter().map(|c| c.iter().map(|c| String::from(c)).collect::<String>()).collect::<Vec<String>>().join("\n");
         let mut vals = map.values().collect::<Vec<&usize>>();
+        println!("{:?}", matrix_copy);
         vals.sort();
         println!("{:?}", vals.iter().last());
 

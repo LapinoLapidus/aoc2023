@@ -1,6 +1,6 @@
 use std::fs;
 
-fn generate_subrows<'a>(line: &'a Vec<isize>, mut adder: &mut Vec<Vec<isize>>) {
+fn generate_subrows(mut adder: &mut Vec<Vec<isize>>) {
     let mut inner_adder = vec![];
     let binding = adder.clone();
     let line = binding.last().clone().unwrap();
@@ -10,20 +10,19 @@ fn generate_subrows<'a>(line: &'a Vec<isize>, mut adder: &mut Vec<Vec<isize>>) {
     adder.push(inner_adder.clone());
 
     if !inner_adder.iter().all(|n|n == &0) {
-        generate_subrows(&line, &mut adder)
+        generate_subrows(&mut adder)
     }
 }
 
 fn main() {
     let input = fs::read_to_string("input.txt").unwrap();
-    let nums = input.lines().map(|line| line.split_ascii_whitespace().map(|n| n.parse().unwrap()).collect::<Vec<isize>>()).collect::<Vec<Vec<isize>>>();
-    // println!("{:?}", nums);
+    let mut nums = input.lines().map(|line| line.split_ascii_whitespace().map(|n| n.parse().unwrap()).collect::<Vec<isize>>()).collect::<Vec<Vec<isize>>>();
     let mut count = 0;
-    nums.iter().for_each(|line| {
+    nums.iter_mut().for_each(|mut line| {
         let mut adder = vec![];
+        line.reverse();
         adder.push(line.clone());
-        generate_subrows(line, &mut adder);
-        println!("{:?}", adder);
+        generate_subrows(&mut adder);
 
         adder.reverse();
         for i in 0..adder.len() {
@@ -31,7 +30,6 @@ fn main() {
             adder[i].push(a);
         }
         count += adder.last().unwrap().last().unwrap();
-        println!("{:?}", adder);
     });
     println!("{}", count);
 }
